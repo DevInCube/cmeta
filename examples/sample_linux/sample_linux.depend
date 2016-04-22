@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1461317150 source:/home/devincube/projects/cmeta/cmeta/cmeta.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<stdint.h>
+	<stdbool.h>
+	"cmeta.h"
+
+1461317215 /home/devincube/projects/cmeta/cmeta/cmeta.h
+	<stdlib.h>
+	<stddef.h>
+	<stdint.h>
+	<stdbool.h>
+
+1461316178 source:/home/devincube/projects/cmeta/examples/sample_linux/main.c
+	<stdio.h>
+	<stdlib.h>
+	<cmeta.h>
+
