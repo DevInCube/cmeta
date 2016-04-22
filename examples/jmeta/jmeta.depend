@@ -13,13 +13,13 @@
 	<stdint.h>
 	<stdbool.h>
 
-1461344467 source:/home/devincube/projects/cmeta/examples/jmeta/main.c
+1461353244 source:/home/devincube/projects/cmeta/examples/jmeta/main.c
 	<stdio.h>
 	<stdlib.h>
 	<cmeta.h>
 	"jmeta.h"
 
-1461344543 /home/devincube/projects/cmeta/examples/jmeta/jmeta.h
+1461352862 /home/devincube/projects/cmeta/examples/jmeta/jmeta.h
 	<stdlib.h>
 	<cmeta.h>
 
@@ -34,4 +34,10 @@
 	"cJSON.h"
 
 1461221119 /home/devincube/projects/cmeta/examples/jmeta/cJSON/cJSON.h
+
+1461353857 source:/home/devincube/projects/cmeta/examples/jmeta/jmeta.c
+	<stdlib.h>
+	<stdio.h>
+	"jmeta.h"
+	"cJSON.h"
 

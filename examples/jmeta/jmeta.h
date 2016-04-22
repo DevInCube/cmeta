@@ -37,4 +37,4 @@ struct jmeta_struct_s {
 #define JMETA_ARR(FIELD, JMETATYPE, NAME) { NAME, #FIELD, & JMETATYPE }
 
 const char * jmeta_serialize(void * obj, const jmeta_struct_t * jmeta);
-
+void jmeta_deserialize(void * obj, const jmeta_struct_t * jtype, const char * jstr);

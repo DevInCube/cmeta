@@ -67,5 +67,17 @@ int main(void) {
     const char * jStr = jmeta_serialize(&sample, &JSAMPLE_T);
     printf("JSON: %s\n", jStr);
     free((void *)jStr);
+    const char * newJsonStr = "{"
+        "\"boolean\" : false,"
+        "\"integer\" : 12345,"
+        "\"_double\" : 1.123456,"
+        "\"stringBuf\" : \"json string\","
+        "\"stringPtr\" : \"json string pointed\","
+        "\"pointArr\" : [ {\"x\":9, \"y\":9}, {\"x\":8, \"y\":8} ]"
+    "}";
+    jmeta_deserialize(&sample, &JSAMPLE_T, newJsonStr);
+    jStr = jmeta_serialize(&sample, &JSAMPLE_T);
+    printf("JSON-2: %s\n", jStr);
+    free((void *)jStr);
     return 0;
 }
