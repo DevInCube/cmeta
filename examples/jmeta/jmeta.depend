@@ -1,0 +1,37 @@
+# depslib dependency file v1.0
+1461320341 source:/home/devincube/projects/cmeta/cmeta/cmeta.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<stdint.h>
+	<stdbool.h>
+	"cmeta.h"
+
+1461320418 /home/devincube/projects/cmeta/cmeta/cmeta.h
+	<stdlib.h>
+	<stddef.h>
+	<stdint.h>
+	<stdbool.h>
+
+1461344467 source:/home/devincube/projects/cmeta/examples/jmeta/main.c
+	<stdio.h>
+	<stdlib.h>
+	<cmeta.h>
+	"jmeta.h"
+
+1461344543 /home/devincube/projects/cmeta/examples/jmeta/jmeta.h
+	<stdlib.h>
+	<cmeta.h>
+
+1461221119 source:/home/devincube/projects/cmeta/examples/jmeta/cJSON/cJSON.c
+	<string.h>
+	<stdio.h>
+	<math.h>
+	<stdlib.h>
+	<float.h>
+	<limits.h>
+	<ctype.h>
+	"cJSON.h"
+
+1461221119 /home/devincube/projects/cmeta/examples/jmeta/cJSON/cJSON.h
+

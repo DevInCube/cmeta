@@ -73,6 +73,13 @@ CMETA_TYPE(CSTRING, char[1]);
 void cmeta_struct_print(const cmeta_struct_t * metaClass);
 const char * cmeta_toString(const cmeta_struct_t * meta);
 
+int cmeta_type_eq(const cmeta_struct_t * a, const cmeta_struct_t * b);
+int cmeta_isBasicType(const cmeta_field_t * field);
+int cmeta_isObject(const cmeta_field_t * field);
+int cmeta_isArray(const cmeta_field_t * field);
+
+const cmeta_field_t * cmeta_struct_getField(const cmeta_struct_t * meta, const char * fieldName);
+
 const char * cmeta_getString(void * obj, const cmeta_struct_t * meta, const char * fieldName);
 void cmeta_setString(void * obj, const cmeta_struct_t * meta, const char * fieldName, const char * value);
 

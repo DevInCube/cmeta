@@ -10,19 +10,19 @@ const char * cmeta_toString(const cmeta_struct_t * type) {
     return type->name;
 }
 
-static int cmeta_type_eq(const cmeta_struct_t * a, const cmeta_struct_t * b) {
+int cmeta_type_eq(const cmeta_struct_t * a, const cmeta_struct_t * b) {
     return strcmp(a->name, b->name) == 0;
 }
 
-static int cmeta_isBasicType(const cmeta_field_t * field) {
+int cmeta_isBasicType(const cmeta_field_t * field) {
     return (NULL == field->type->fields);
 }
 
-static int cmeta_isObject(const cmeta_field_t * field) {
+int cmeta_isObject(const cmeta_field_t * field) {
     return !cmeta_isBasicType(field) && (0 == field->arrSize);
 }
 
-static int cmeta_isArray(const cmeta_field_t * field) {
+int cmeta_isArray(const cmeta_field_t * field) {
     return !cmeta_isBasicType(field) && (0 != field->arrSize);
 }
 
@@ -64,7 +64,7 @@ void cmeta_struct_print(const cmeta_struct_t * metaType) {
 	cmeta_struct_print_lvl(metaType, NULL, 0);
 }
 
-static const cmeta_field_t * cmeta_struct_getField(const cmeta_struct_t * meta, const char * fieldName) {
+const cmeta_field_t * cmeta_struct_getField(const cmeta_struct_t * meta, const char * fieldName) {
     const cmeta_field_t * field = NULL;
     for (int i = 0; i < meta->fieldsSize; i++) {
         field = meta->fields + i;
