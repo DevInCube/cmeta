@@ -32,9 +32,12 @@ struct jmeta_struct_s {
 
 #define AUTO NULL
 
-#define JMETA(FIELD, NAME)  { NAME,  #FIELD, NULL }
-#define JMETA_OBJ(FIELD, JMETATYPE, NAME) { NAME, #FIELD, & JMETATYPE }
-#define JMETA_ARR(FIELD, JMETATYPE, NAME) { NAME, #FIELD, & JMETATYPE }
+#define JMETA(FIELD, NAME)  \
+    { ((NAME) ? NAME : #FIELD),  #FIELD, NULL }
+#define JMETA_OBJ(FIELD, JMETATYPE, NAME) \
+    { ((NAME) ? NAME : #FIELD), #FIELD, & JMETATYPE }
+#define JMETA_ARR(FIELD, JMETATYPE, NAME) \
+    { ((NAME) ? NAME : #FIELD), #FIELD, & JMETATYPE }
 
 const char * jmeta_serialize(void * obj, const jmeta_struct_t * jmeta);
 void jmeta_deserialize(void * obj, const jmeta_struct_t * jtype, const char * jstr);

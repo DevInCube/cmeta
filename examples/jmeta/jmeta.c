@@ -13,7 +13,7 @@ static cJSON * _jmeta_serialize(void * obj, const jmeta_struct_t * jmeta) {
             // @todo error
             return NULL;
         }
-        const char * jKey = (AUTO == jfield->name) ? jfield->fieldName : jfield->name;
+        const char * jsonKey = jfield->name;
         cJSON * jItem = NULL;
         if (cmeta_isObject(cfield)) {
             void * innerObj = cmeta_getObject(obj, jmeta->metaType, jfield->fieldName);
@@ -39,7 +39,7 @@ static cJSON * _jmeta_serialize(void * obj, const jmeta_struct_t * jmeta) {
             const char * value = cmeta_getString(obj, jmeta->metaType, jfield->fieldName);
             jItem = cJSON_CreateString(value);
         }
-        cJSON_AddItemToObject(j, jKey, jItem);
+        cJSON_AddItemToObject(j, jsonKey, jItem);
     }
     return j;
 }
@@ -60,8 +60,8 @@ void _jmeta_deserialize(void * obj, const jmeta_struct_t * jmeta, cJSON * j) {
             // @todo error
             return;
         }
-        const char * jKey = (AUTO == jfield->name) ? jfield->fieldName : jfield->name;
-        cJSON * jItem = cJSON_GetObjectItem(j, jKey);
+        const char * jsonKey = jfield->name;
+        cJSON * jItem = cJSON_GetObjectItem(j, jsonKey);
         if (NULL == jItem) {
             // @todo or error on STRICT
             continue;
@@ -92,7 +92,7 @@ void _jmeta_deserialize(void * obj, const jmeta_struct_t * jmeta, cJSON * j) {
                 // @todo or fail or malloc&copy
                 continue;
             }
-            const char * val = (const char *)jItem->string;
+            const char * val = (const char *)jItem->valuestring;
             cmeta_setString(obj, jmeta->metaType, jfield->fieldName, val);
         }
     }
