@@ -1,0 +1,161 @@
+# depslib dependency file v1.0
+1461320341 source:/home/devincube/projects/cmeta/cmeta/cmeta.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<stdint.h>
+	<stdbool.h>
+	"cmeta.h"
+
+1461320418 /home/devincube/projects/cmeta/cmeta/cmeta.h
+	<stdlib.h>
+	<stddef.h>
+	<stdint.h>
+	<stdbool.h>
+
+1461438123 source:/home/devincube/projects/cmeta/examples/xmeta/main.c
+	<stdio.h>
+	<stdlib.h>
+	"xmeta.h"
+
+1461438136 /home/devincube/projects/cmeta/examples/xmeta/xmeta.h
+	<stdlib.h>
+	<cmeta.h>
+
+1461438152 source:/home/devincube/projects/cmeta/examples/xmeta/xmeta.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<cmeta.h>
+	"xmeta.h"
+	<libxml/parser.h>
+	<libxml/tree.h>
+	<libxml/xpath.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/parser.h
+	<stdarg.h>
+	<libxml/xmlversion.h>
+	<libxml/tree.h>
+	<libxml/dict.h>
+	<libxml/hash.h>
+	<libxml/valid.h>
+	<libxml/entities.h>
+	<libxml/xmlerror.h>
+	<libxml/xmlstring.h>
+	<libxml/encoding.h>
+	<libxml/xmlIO.h>
+	<libxml/globals.h>
+
+1459541853 /home/devincube/libs/libxml2/include/libxml/xmlversion.h
+	<libxml/xmlexports.h>
+	<ansidecl.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/xmlexports.h
+
+1446538422 /home/devincube/libs/libxml2/include/libxml/tree.h
+	<stdio.h>
+	<limits.h>
+	<libxml/xmlversion.h>
+	<libxml/xmlstring.h>
+	<libxml/xmlregexp.h>
+	<libxml/xmlmemory.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/xmlstring.h
+	<stdarg.h>
+	<libxml/xmlversion.h>
+
+1412326853 /home/devincube/libs/libxml2/include/libxml/xmlregexp.h
+	<libxml/xmlversion.h>
+	<libxml/tree.h>
+	<libxml/dict.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/dict.h
+	<limits.h>
+	<libxml/xmlversion.h>
+	<libxml/tree.h>
+
+1412326853 /home/devincube/libs/libxml2/include/libxml/xmlmemory.h
+	<stdio.h>
+	<libxml/xmlversion.h>
+	<libxml/threads.h>
+	<libxml/globals.h>
+
+1412326853 /home/devincube/libs/libxml2/include/libxml/threads.h
+	<libxml/xmlversion.h>
+	<libxml/globals.h>
+
+1446535688 /home/devincube/libs/libxml2/include/libxml/globals.h
+	<libxml/xmlversion.h>
+	<libxml/parser.h>
+	<libxml/xmlerror.h>
+	<libxml/SAX.h>
+	<libxml/SAX2.h>
+	<libxml/xmlmemory.h>
+	<libxml/threads.h>
+
+1446535688 /home/devincube/libs/libxml2/include/libxml/xmlerror.h
+	<libxml/parser.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/SAX.h
+	<stdio.h>
+	<stdlib.h>
+	<libxml/xmlversion.h>
+	<libxml/parser.h>
+	<libxml/xlink.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/xlink.h
+	<libxml/xmlversion.h>
+	<libxml/tree.h>
+
+1446535688 /home/devincube/libs/libxml2/include/libxml/SAX2.h
+	<stdio.h>
+	<stdlib.h>
+	<libxml/xmlversion.h>
+	<libxml/parser.h>
+	<libxml/xlink.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/hash.h
+	<libxml/xmlversion.h>
+	<libxml/parser.h>
+	<libxml/dict.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/valid.h
+	<libxml/xmlversion.h>
+	<libxml/xmlerror.h>
+	<libxml/tree.h>
+	<libxml/list.h>
+	<libxml/xmlautomata.h>
+	<libxml/xmlregexp.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/list.h
+	<libxml/xmlversion.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/xmlautomata.h
+	<libxml/xmlversion.h>
+	<libxml/tree.h>
+	<libxml/xmlregexp.h>
+
+1446535688 /home/devincube/libs/libxml2/include/libxml/entities.h
+	<libxml/xmlversion.h>
+	<libxml/tree.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/encoding.h
+	<libxml/xmlversion.h>
+	<iconv.h>
+	<unicode/ucnv.h>
+	<libxml/tree.h>
+
+1446535688 /home/devincube/libs/libxml2/include/libxml/xmlIO.h
+	<stdio.h>
+	<libxml/xmlversion.h>
+	<libxml/globals.h>
+	<libxml/tree.h>
+	<libxml/parser.h>
+	<libxml/encoding.h>
+
+1430913876 /home/devincube/libs/libxml2/include/libxml/xpath.h
+	<libxml/xmlversion.h>
+	<libxml/xmlerror.h>
+	<libxml/tree.h>
+	<libxml/hash.h>
+
