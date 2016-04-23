@@ -70,7 +70,7 @@ const char * xmeta_serialize(void * obj, const xmeta_struct_t * xmeta) {
 
 static xmlNode * _xml_getNodeByKey(xmlNode * xnode, const char * key) {
     for (xmlNode * xI = xnode->children; xI; xI = xI->next) {
-        if(xmlStrcmp(xI->name, key) == 0) {
+        if(xmlStrcmp(xI->name, (unsigned char *)key) == 0) {
             return xI;
         }
     }
@@ -107,15 +107,15 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
                 _xmeta_deserialize(itemObj, xfield->type, xI);
             }
         } else {
-            const char * content = NULL;
+            char * content = NULL;
             xmlChar * xvalue = NULL;
             if (xfield->isAttribute) {
-                xvalue = xmlGetProp(xnode, xname);
+                xvalue = xmlGetProp(xnode, (unsigned char *)xname);
             } else {
                 xvalue = xmlNodeGetContent(innerNode);
             }
             content = malloc(sizeof(char) * strlen((char *)xvalue) + 1);
-            strncpy(content, xvalue, strlen(xvalue) + 1);
+            strncpy(content, (char *)xvalue, strlen((char *)xvalue) + 1);
             if (cmeta_type_eq(cfield->type, &CBOOLEAN)) {
                 bool value = (strncmp(content, "true", 4) == 0) ? true : false;
                 cmeta_setBoolean(obj, xmeta->metaType, xfield->fieldName, value);

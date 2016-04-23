@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-std=c99 -pedantic-errors -Werror" />
 					<Add directory="/home/devincube/projects/cmeta/cmeta" />
 					<Add directory="/home/devincube/libs/libxml2/include" />
 				</Compiler>
