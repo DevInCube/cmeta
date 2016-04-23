@@ -38,21 +38,19 @@ CMETA_STRUCT(CPOINT_T, point_t, {
 
 XMETA_STRUCT(XPOINT_T, CPOINT_T, {
     XMETA(b, AUTO),
-    XMETA(x, AUTO),
+    XMETA_ATTR(x, AUTO),
     XMETA(y, AUTO),
     XMETA(str, AUTO),
     XMETA_OBJ(o, XO_T, AUTO),
     XMETA_ARR(arr, XO_T, "item", AUTO),
 });
 
-
-
 int main(void) {
     point_t point = { false, 5, 45.56, "Some string", {6, 6}};
     const char * xml = ""
-        "<root>"
+        "<root x=\"23\">"
             "<b>true</b>"
-            "<x>23</x>"
+            //"<x>23</x>"
             "<y>100.001</y>"
             "<str>String from XML</str>"
             "<o><x>1</x><attr>2</attr></o>"

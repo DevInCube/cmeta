@@ -77,28 +77,17 @@ static xmlNode * _xml_getNodeByKey(xmlNode * xnode, const char * key) {
     return NULL;
 }
 
-static const char * _xml_getContentByKey(xmlNode * xnode, const char * key) {
-    xmlNode * xI = _xml_getNodeByKey(xnode, key);
-    if (NULL == xI) {
-        return NULL;
-    }
-    xmlChar * xvalue = xmlNodeGetContent(xI);
-    char * value = malloc(sizeof(char) * strlen((char *)xvalue) + 1);
-    strncpy(value, xvalue, strlen(xvalue) + 1);
-    return (const char *)value;
-}
-
 void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnode) {
     for (int i = 0; i < xmeta->fieldsSize; i++) {
         const xmeta_field_t * xfield = xmeta->fields + i;
         const cmeta_field_t * cfield = cmeta_struct_getField(xmeta->metaType, xfield->fieldName);
         if (NULL == cfield) {
             // @todo error
-            return;
+            continue;
         }
         const char * xname = xfield->name;
+        xmlNode * innerNode = _xml_getNodeByKey(xnode, xname);
         if (cmeta_isObject(cfield)) {
-            xmlNode * innerNode = _xml_getNodeByKey(xnode, xname);
             if (NULL == innerNode) {
                 // @todo
                 continue;
@@ -107,7 +96,6 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
             _xmeta_deserialize(innerObj, xfield->type, innerNode);
             continue;
         } else if (cmeta_isArray(cfield)) {
-            xmlNode * innerNode = _xml_getNodeByKey(xnode, xname);
             if (NULL == innerNode) {
                 // @todo
                 continue;
@@ -119,7 +107,15 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
                 _xmeta_deserialize(itemObj, xfield->type, xI);
             }
         } else {
-            const char * content = _xml_getContentByKey(xnode, xname);
+            const char * content = NULL;
+            xmlChar * xvalue = NULL;
+            if (xfield->isAttribute) {
+                xvalue = xmlGetProp(xnode, xname);
+            } else {
+                xvalue = xmlNodeGetContent(innerNode);
+            }
+            content = malloc(sizeof(char) * strlen((char *)xvalue) + 1);
+            strncpy(content, xvalue, strlen(xvalue) + 1);
             if (cmeta_type_eq(cfield->type, &CBOOLEAN)) {
                 bool value = (strncmp(content, "true", 4) == 0) ? true : false;
                 cmeta_setBoolean(obj, xmeta->metaType, xfield->fieldName, value);
@@ -134,11 +130,6 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
                 cmeta_setString(obj, xmeta->metaType, xfield->fieldName, value);
             }
             free((void *)content);
-        }
-        if (xfield->isAttribute) {
-            //xmlNewProp(xnode, (unsigned char *)xname, (unsigned char *)xvalue);
-        } else {
-            //xmlNewChild(xnode, NULL, (unsigned char *)xname, (unsigned char *)xvalue);
         }
     }
 }
