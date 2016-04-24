@@ -14,11 +14,12 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-std=c99 -pedantic-errors -Werror" />
-					<Add directory="/home/devincube/projects/cmeta/cmeta" />
+					<Add directory="../../include" />
 					<Add directory="/home/devincube/libs/libxml2/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-lxml2" />
+					<Add library="../../libcmeta.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -37,9 +38,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../../cmeta/cmeta.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

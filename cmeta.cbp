@@ -2,32 +2,31 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="jmeta" />
+		<Option title="cmeta" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/jmeta" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/cmeta" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj/Debug/" />
-				<Option type="1" />
+				<Option type="2" />
 				<Option compiler="gcc" />
+				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-Wall" />
 					<Add option="-g" />
-					<Add option="-std=c99 -Werror -pedantic-errors" />
-					<Add directory="../../include" />
-					<Add directory="cJSON" />
 				</Compiler>
-				<Linker>
-					<Add library="cJSON/libcjson.a" />
-					<Add library="../../libcmeta.a" />
-				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/jmeta" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/cmeta" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj/Release/" />
-				<Option type="1" />
+				<Option type="2" />
 				<Option compiler="gcc" />
+				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-Wall" />
 					<Add option="-O2" />
 				</Compiler>
 				<Linker>
@@ -35,15 +34,6 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Compiler>
-			<Add option="-Wall" />
-		</Compiler>
-		<Unit filename="jmeta.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="jmeta.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

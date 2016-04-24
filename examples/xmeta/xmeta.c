@@ -19,33 +19,34 @@ static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode *
             return;
         }
         const char * xname = xfield->name;
+        const char * cname = cfield->name;
         const char * xvalue = NULL;
         if (cmeta_isObject(cfield)) {
-            void * innerObj = cmeta_getObject(obj, xmeta->metaType, xfield->fieldName);
+            void * innerObj = cmeta_getObject(obj, xmeta->metaType, cname);
             _xmeta_serialize(innerObj, xfield->type, xnode, xname);
             continue;
         } else if (cmeta_isArray(cfield)) {
             xmlNode * listNode = xmlNewChild(xnode, NULL, (unsigned char *)xname, NULL);
-            size_t arrSize = cmeta_getArraySize(xmeta->metaType, xfield->fieldName);
+            size_t arrSize = cmeta_getArraySize(xmeta->metaType, cname);
             for (int itemIndex = 0; itemIndex < arrSize; itemIndex++) {
-                void * arrItem = cmeta_getArrayItem(obj, xmeta->metaType, xfield->fieldName, itemIndex);
+                void * arrItem = cmeta_getArrayItem(obj, xmeta->metaType, cname, itemIndex);
                 _xmeta_serialize(arrItem, xfield->type, listNode, xfield->arrItemName);
             }
         } else if (cmeta_type_eq(cfield->type, &CBOOLEAN)) {
-            bool value = cmeta_getBoolean(obj, xmeta->metaType, xfield->fieldName);
+            bool value = cmeta_getBoolean(obj, xmeta->metaType, cname);
             xvalue = (value) ? "true" : "false";
         } else if (cmeta_type_eq(cfield->type, &CINTEGER)) {
-            int value = cmeta_getInteger(obj, xmeta->metaType, xfield->fieldName);
+            int value = cmeta_getInteger(obj, xmeta->metaType, cname);
             char buf[20] = "";
             snprintf(buf, 20, "%i", value);
             xvalue = buf;
         } else if (cmeta_type_eq(cfield->type, &CDOUBLE)) {
-            double value = cmeta_getDouble(obj, xmeta->metaType, xfield->fieldName);
+            double value = cmeta_getDouble(obj, xmeta->metaType, cname);
             char buf[20] = "";
             snprintf(buf, 20, "%f", value);
             xvalue = buf;
         } else if (cmeta_type_eq(cfield->type, &CSTRING)) {
-            const char * value = cmeta_getString(obj, xmeta->metaType, xfield->fieldName);
+            const char * value = cmeta_getString(obj, xmeta->metaType, cname);
             xvalue = value;
         }
         if (xfield->isAttribute) {
@@ -78,21 +79,23 @@ static xmlNode * _xml_getNodeByKey(xmlNode * xnode, const char * key) {
 }
 
 void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnode) {
+    const cmeta_struct_t * cmetatype = xmeta->metaType;
     for (int i = 0; i < xmeta->fieldsSize; i++) {
         const xmeta_field_t * xfield = xmeta->fields + i;
-        const cmeta_field_t * cfield = cmeta_struct_getField(xmeta->metaType, xfield->fieldName);
+        const cmeta_field_t * cfield = cmeta_struct_getField(cmetatype, xfield->fieldName);
         if (NULL == cfield) {
             // @todo error
             continue;
         }
         const char * xname = xfield->name;
+        const char * cname = cfield->name;
         xmlNode * innerNode = _xml_getNodeByKey(xnode, xname);
         if (cmeta_isObject(cfield)) {
             if (NULL == innerNode) {
                 // @todo
                 continue;
             }
-            void * innerObj = cmeta_getObject(obj, xmeta->metaType, xfield->fieldName);
+            void * innerObj = cmeta_getObject(obj, cmetatype, cname);
             _xmeta_deserialize(innerObj, xfield->type, innerNode);
             continue;
         } else if (cmeta_isArray(cfield)) {
@@ -100,10 +103,10 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
                 // @todo
                 continue;
             }
-            size_t cArrSize = cmeta_getArraySize(xmeta->metaType, xfield->fieldName);
+            size_t cArrSize = cmeta_getArraySize(cmetatype, cname);
             int index = 0;
             for (xmlNode * xI = innerNode->children; xI && (index < cArrSize); xI = xI->next, index++) {
-                void * itemObj = cmeta_getArrayItem(obj, xmeta->metaType, xfield->fieldName, (int)index);
+                void * itemObj = cmeta_getArrayItem(obj, cmetatype, cname, index);
                 _xmeta_deserialize(itemObj, xfield->type, xI);
             }
         } else {
@@ -118,16 +121,16 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
             strncpy(content, (char *)xvalue, strlen((char *)xvalue) + 1);
             if (cmeta_type_eq(cfield->type, &CBOOLEAN)) {
                 bool value = (strncmp(content, "true", 4) == 0) ? true : false;
-                cmeta_setBoolean(obj, xmeta->metaType, xfield->fieldName, value);
+                cmeta_setBoolean(obj, cmetatype, cname, value);
             } else if (cmeta_type_eq(cfield->type, &CINTEGER)) {
                 int value = atoi(content);
-                cmeta_setInteger(obj, xmeta->metaType, xfield->fieldName, value);
+                cmeta_setInteger(obj, cmetatype, cname, value);
             } else if (cmeta_type_eq(cfield->type, &CDOUBLE)) {
                 double value = atof(content);
-                cmeta_setDouble(obj, xmeta->metaType, xfield->fieldName, value);
+                cmeta_setDouble(obj, cmetatype, cname, value);
             } else if (cmeta_type_eq(cfield->type, &CSTRING)) {
                 const char * value = content;
-                cmeta_setString(obj, xmeta->metaType, xfield->fieldName, value);
+                cmeta_setString(obj, cmetatype, cname, value);
             }
             free((void *)content);
         }
