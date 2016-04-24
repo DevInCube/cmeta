@@ -30,3 +30,19 @@
 
 # Debug files
 *.dSYM/
+
+# GEdit
+*~
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+# Libs
+examples/jmeta/cJSON/
+bin/
+obj/

@@ -22,7 +22,7 @@
 	<stdlib.h>
 	<cmeta.h>
 
-1461444668 source:/home/devincube/projects/cmeta/examples/xmeta/xmeta.c
+1461444882 source:/home/devincube/projects/cmeta/examples/xmeta/xmeta.c
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
@@ -158,4 +158,10 @@
 	<libxml/xmlerror.h>
 	<libxml/tree.h>
 	<libxml/hash.h>
+
+1461508890 /home/devincube/projects/cmeta/include/cmeta.h
+	<stdlib.h>
+	<stddef.h>
+	<stdint.h>
+	<stdbool.h>
 

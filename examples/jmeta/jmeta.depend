@@ -33,11 +33,17 @@
 	<ctype.h>
 	"cJSON.h"
 
-1461221119 /home/devincube/projects/cmeta/examples/jmeta/cJSON/cJSON.h
+1461517534 /home/devincube/projects/cmeta/examples/jmeta/cJSON/cJSON.h
 
-1461353857 source:/home/devincube/projects/cmeta/examples/jmeta/jmeta.c
+1461400888 source:/home/devincube/projects/cmeta/examples/jmeta/jmeta.c
 	<stdlib.h>
 	<stdio.h>
 	"jmeta.h"
 	"cJSON.h"
+
+1461508890 /home/devincube/projects/cmeta/include/cmeta.h
+	<stdlib.h>
+	<stddef.h>
+	<stdint.h>
+	<stdbool.h>
 
