@@ -97,11 +97,24 @@ void cmeta_setDouble(void * obj, const cmeta_struct_t *meta, const char * fieldN
 void * cmeta_getObject(void * obj, const cmeta_struct_t *meta, const char * fieldName);
 void cmeta_setObject(void * obj, const cmeta_struct_t *meta, const char * fieldName, void * value);
 
+#define cmeta_get(OBJ, META, FIELD_NAME, TYPE)  \
+	_Generic((TYPE)0,							\
+		const char *: cmeta_getString, 			\
+			  char *: cmeta_getString, 			\
+			  	bool: cmeta_getBoolean,			\
+				 int: cmeta_getInteger,			\
+			  double: cmeta_getDouble,			\
+			 default: cmeta_getObject			\
+	)(OBJ, META, FIELD_NAME)
+
+/**
+	@brief a generalized set function
+	Note that bools are treated as ints here
+*/
 #define cmeta_set(OBJ, META, FIELD_NAME, VAL)	\
 	_Generic((VAL),								\
 		const char *: cmeta_setString, 			\
 			  char *: cmeta_setString, 			\
-			    bool: cmeta_setBoolean,			\
 				 int: cmeta_setInteger,			\
 			  double: cmeta_setDouble,			\
 			 default: cmeta_setObject			\

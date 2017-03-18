@@ -1,9 +1,12 @@
 {
 	// See https://go.microsoft.com/fwlink/?LinkId=733558
 	// for the documentation about the tasks.json format
-	"version": "0.1.0",
-	"command": "./build/main",
+	"command": "gnome-terminal",
 	"isShellCommand": true,
-	"args": [],
-	"showOutput": "always"
+	"args": [
+		"--tab",
+		"-e",
+		"/bin/bash -c './build/main; exec /bin/bash -i'"
+	],
+"showOutput": "always"
 }

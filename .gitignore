@@ -47,5 +47,3 @@ examples/jmeta/cJSON/
 bin/
 obj/
 build/
-
-main.c
