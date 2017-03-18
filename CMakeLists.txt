@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.8)
 
 include_directories(include)
 file(GLOB LIB_SOURCES "src/*.c")
-add_definitions(-std=c99)
+add_definitions(-std=c11)
 
 project(cmeta)
 add_library(${CMAKE_PROJECT_NAME} STATIC ${LIB_SOURCES})
