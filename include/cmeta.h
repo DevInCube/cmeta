@@ -37,6 +37,12 @@ struct cmeta_object_s {
 	const void * ptr;
 };
 
+#define cmeta_cast_object(PTR, TYPE) 	\
+	&((cmeta_object_t){					\
+        .type = TYPE,					\
+        .ptr = PTR						\
+    });
+
 #define __LEN(X) (sizeof((X)) / sizeof((X)[0]))
 #define __CMETA_FIELDS(CMETATYPENAME) __ ## CMETATYPENAME ## __fields
 

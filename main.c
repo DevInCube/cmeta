@@ -53,13 +53,9 @@ int main(void) {
         .pointObjPtr = &point,
         .pointArr = { point, point2, {0, 0}, {1, 1}, {2, 2}}
     };
-    cmeta_object_t * obj = &((cmeta_object_t){
-        .type = &CSAMPLE_T,
-        .ptr = &sample
-    });
-
     sample_cmeta_print(&sample);
 
+    cmeta_object_t * obj = cmeta_cast_object(&sample, &CSAMPLE_T);
     cmeta_set(obj, "boolean", true);
     cmeta_set(obj, "integer", 999);
     cmeta_set(obj, "_double", 19.93);
@@ -76,10 +72,7 @@ int main(void) {
 
 void sample_cmeta_print(sample_t * sample) {
     printf("\nsample_T obj;\n");
-    cmeta_object_t * self = &((cmeta_object_t){
-        .type = &CSAMPLE_T,
-        .ptr = sample
-    });
+    cmeta_object_t * self = cmeta_cast_object(sample, &CSAMPLE_T);
     printf("obj.boolean = %i;\n", cmeta_get(self, "boolean", bool));
     printf("obj.integer = %i;\n", cmeta_get(self, "integer", int));
     printf("obj._double = %f;\n", cmeta_get(self, "_double", double));
