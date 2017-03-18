@@ -88,7 +88,7 @@ void sample_cmeta_print(sample_t * sample) {
     printf("obj.pointObj = {%i, %i};\n", pointObj->x, pointObj->y);
     pointObj = cmeta_get(self, "pointObjPtr", point_t *);
     printf("obj.pointObjPtr = {%i, %i};\n", pointObj->x, pointObj->y);
-    int arrLen = cmeta_getArraySize(&CSAMPLE_T, "pointArr");
+    int arrLen = cmeta_getArraySize(self, "pointArr");
     printf("obj.pointArr[%i]:\n", arrLen);
     for (int i = 0; i < arrLen; i++) {
         point_t * p = (point_t *)cmeta_getArrayItem(self, "pointArr", i);

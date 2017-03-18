@@ -121,7 +121,7 @@ void cmeta_setDouble(cmeta_object_t * self, const char * fieldName, double value
 void * cmeta_getObject(cmeta_object_t * self, const char * fieldName);
 void cmeta_setObject(cmeta_object_t * self, const char * fieldName, void * value);
 
-int cmeta_getArraySize(const cmeta_struct_t *meta, const char * fieldName);
+int cmeta_getArraySize(cmeta_object_t * self, const char * fieldName);
 void * cmeta_getArrayItem(cmeta_object_t * self, const char * fieldName, int index);
 void cmeta_setArrayItem(cmeta_object_t * self, const char * fieldName, int index, void * value);
 

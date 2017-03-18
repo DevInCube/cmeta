@@ -207,7 +207,8 @@ void cmeta_setObject(cmeta_object_t * self, const char * fieldName, void * value
     }
 }
 
-int cmeta_getArraySize(const cmeta_struct_t * meta, const char * fieldName) {
+int cmeta_getArraySize(cmeta_object_t * self, const char * fieldName) {
+    const cmeta_struct_t * meta = self->type;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_isArray(field)) {
         return 0;
