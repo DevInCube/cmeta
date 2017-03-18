@@ -75,7 +75,9 @@ const cmeta_field_t * cmeta_struct_getField(const cmeta_struct_t * meta, const c
     return NULL;
 }
 
-const char * cmeta_getString(void * obj, const cmeta_struct_t * meta, const char * fieldName) {
+const char * cmeta_getString(cmeta_object_t * self, const char * fieldName) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_type_eq(field->type, &CSTRING)) {
         return NULL;
@@ -89,7 +91,9 @@ const char * cmeta_getString(void * obj, const cmeta_struct_t * meta, const char
     }
 }
 
-void cmeta_setString(void * obj, const cmeta_struct_t * meta, const char * fieldName, const char * value) {
+void cmeta_setString(cmeta_object_t * self, const char * fieldName, const char * value) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_type_eq(field->type, &CSTRING)) {
         return;
@@ -108,7 +112,9 @@ void cmeta_setString(void * obj, const cmeta_struct_t * meta, const char * field
     }
 }
 
-int cmeta_getInteger(void * obj, const cmeta_struct_t * meta, const char * fieldName) {
+int cmeta_getInteger(cmeta_object_t * self, const char * fieldName) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_type_eq(field->type, &CINTEGER)) {
         return 0;
@@ -116,7 +122,9 @@ int cmeta_getInteger(void * obj, const cmeta_struct_t * meta, const char * field
     return *(int *)CMETA_OFFSET(obj, field->offset);
 }
 
-void cmeta_setInteger(void * obj, const cmeta_struct_t * meta, const char * fieldName, int value) {
+void cmeta_setInteger(cmeta_object_t * self, const char * fieldName, int value) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) 
         || !(cmeta_type_eq(field->type, &CINTEGER) || cmeta_type_eq(field->type, &CBOOLEAN))) {
@@ -128,7 +136,9 @@ void cmeta_setInteger(void * obj, const cmeta_struct_t * meta, const char * fiel
     *(int *)CMETA_OFFSET(obj, field->offset) = value;
 }
 
-bool cmeta_getBoolean(void * obj, const cmeta_struct_t * meta, const char * fieldName) {
+bool cmeta_getBoolean(cmeta_object_t * self, const char * fieldName) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_type_eq(field->type, &CBOOLEAN)) {
         return false;
@@ -136,7 +146,9 @@ bool cmeta_getBoolean(void * obj, const cmeta_struct_t * meta, const char * fiel
     return *(bool *)CMETA_OFFSET(obj, field->offset);
 }
 
-void cmeta_setBoolean(void * obj, const cmeta_struct_t * meta, const char * fieldName, bool value) {
+void cmeta_setBoolean(cmeta_object_t * self, const char * fieldName, bool value) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_type_eq(field->type, &CBOOLEAN)) {
         return;
@@ -144,7 +156,9 @@ void cmeta_setBoolean(void * obj, const cmeta_struct_t * meta, const char * fiel
     *(bool *)CMETA_OFFSET(obj, field->offset) = value;
 }
 
-double cmeta_getDouble(void * obj, const cmeta_struct_t * meta, const char * fieldName) {
+double cmeta_getDouble(cmeta_object_t * self, const char * fieldName) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_type_eq(field->type, &CDOUBLE)) {
         return 0.0;
@@ -152,7 +166,9 @@ double cmeta_getDouble(void * obj, const cmeta_struct_t * meta, const char * fie
     return *(double *)CMETA_OFFSET(obj, field->offset);
 }
 
-void cmeta_setDouble(void * obj, const cmeta_struct_t * meta, const char * fieldName, double value) {
+void cmeta_setDouble(cmeta_object_t * self, const char * fieldName, double value) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_type_eq(field->type, &CDOUBLE)) {
         return;
@@ -160,7 +176,9 @@ void cmeta_setDouble(void * obj, const cmeta_struct_t * meta, const char * field
     *(double *)CMETA_OFFSET(obj, field->offset) = value;
 }
 
-void * cmeta_getObject(void * obj, const cmeta_struct_t * meta, const char * fieldName) {
+void * cmeta_getObject(cmeta_object_t * self, const char * fieldName) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_isObject(field)) {
         return NULL;
@@ -173,7 +191,9 @@ void * cmeta_getObject(void * obj, const cmeta_struct_t * meta, const char * fie
     }
 }
 
-void cmeta_setObject(void * obj, const cmeta_struct_t * meta, const char * fieldName, void * value) {
+void cmeta_setObject(cmeta_object_t * self, const char * fieldName, void * value) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_isObject(field)) {
         return;
@@ -195,7 +215,9 @@ int cmeta_getArraySize(const cmeta_struct_t * meta, const char * fieldName) {
     return field->arrSize;
 }
 
-void * cmeta_getArrayItem(void * obj, const cmeta_struct_t * meta, const char * fieldName, int index) {
+void * cmeta_getArrayItem(cmeta_object_t * self, const char * fieldName, int index) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_isArray(field)) {
         return NULL;
@@ -217,7 +239,9 @@ void * cmeta_getArrayItem(void * obj, const cmeta_struct_t * meta, const char * 
     }
 }
 
-void cmeta_setArrayItem(void * obj, const cmeta_struct_t * meta, const char * fieldName, int index, void * value) {
+void cmeta_setArrayItem(cmeta_object_t * self, const char * fieldName, int index, void * value) {
+    const cmeta_struct_t * meta = self->type;
+    const void * obj = self->ptr;
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) || !cmeta_isArray(field)) {
         return;

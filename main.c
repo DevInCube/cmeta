@@ -40,10 +40,11 @@ void sample_cmeta_print(sample_t * self);
 
 int main(void) {
     cmeta_struct_print(&CSAMPLE_T);
+
     point_t point = { -333, 777 };
     point_t point2 = { 10, 100 };
-    point_t pointItem = { 9999, -7777 };
-    sample_t obj = {
+
+    sample_t sample = {
         .boolean = false,
         .integer = 667,
         ._double = 321.123,
@@ -52,34 +53,45 @@ int main(void) {
         .pointObjPtr = &point,
         .pointArr = { point, point2, {0, 0}, {1, 1}, {2, 2}}
     };
-    sample_cmeta_print(&obj);
-    cmeta_set(&obj, &CSAMPLE_T, "boolean", true);
-    cmeta_set(&obj, &CSAMPLE_T, "integer", 999);
-    cmeta_set(&obj, &CSAMPLE_T, "_double", 19.93);
-    cmeta_set(&obj, &CSAMPLE_T, "stringBuf", "I am string");  // overflow here
-    cmeta_set(&obj, &CSAMPLE_T, "stringBuf", "I set a new string here");  // overflow here
-    cmeta_set(&obj, &CSAMPLE_T, "pointObj", &point);
-    cmeta_set(&obj, &CSAMPLE_T, "pointObjPtr", &point2);
-    cmeta_setArrayItem(&obj, &CSAMPLE_T, "pointArr", 2, &pointItem);
-    cmeta_setArrayItem(&obj, &CSAMPLE_T, "pointArr", 4, &pointItem);
-    sample_cmeta_print(&obj);
+    cmeta_object_t * obj = &((cmeta_object_t){
+        .type = &CSAMPLE_T,
+        .ptr = &sample
+    });
+
+    sample_cmeta_print(&sample);
+
+    cmeta_set(obj, "boolean", true);
+    cmeta_set(obj, "integer", 999);
+    cmeta_set(obj, "_double", 19.93);
+    cmeta_set(obj, "stringBuf", "I am string");  // overflow here
+    cmeta_set(obj, "stringBuf", "I set a new string here");  // overflow here
+    cmeta_set(obj, "pointObj", &point);
+    cmeta_set(obj, "pointObjPtr", &point2);
+    cmeta_setArrayItem(obj, "pointArr", 2, &((point_t){ 9999, -7777 }));
+    cmeta_setArrayItem(obj, "pointArr", 4, &((point_t){ 1111, -7777 }));
+    sample_cmeta_print(&sample);
+
     return 0;
 }
 
-void sample_cmeta_print(sample_t * self) {
+void sample_cmeta_print(sample_t * sample) {
     printf("\nsample_T obj;\n");
-    printf("obj.boolean = %i;\n", cmeta_get(self, &CSAMPLE_T, "boolean", bool));
-    printf("obj.integer = %i;\n", cmeta_get(self, &CSAMPLE_T, "integer", int));
-    printf("obj._double = %f;\n", cmeta_get(self, &CSAMPLE_T, "_double", double));
-    printf("obj.stringBuf = \"%s\";\n", cmeta_get(self, &CSAMPLE_T, "stringBuf", char *));
-    point_t * pointObj = cmeta_get(self, &CSAMPLE_T, "pointObj", point_t *);
+    cmeta_object_t * self = &((cmeta_object_t){
+        .type = &CSAMPLE_T,
+        .ptr = sample
+    });
+    printf("obj.boolean = %i;\n", cmeta_get(self, "boolean", bool));
+    printf("obj.integer = %i;\n", cmeta_get(self, "integer", int));
+    printf("obj._double = %f;\n", cmeta_get(self, "_double", double));
+    printf("obj.stringBuf = \"%s\";\n", cmeta_get(self, "stringBuf", char *));
+    point_t * pointObj = cmeta_get(self, "pointObj", point_t *);
     printf("obj.pointObj = {%i, %i};\n", pointObj->x, pointObj->y);
-    pointObj = cmeta_get(self, &CSAMPLE_T, "pointObjPtr", point_t *);
+    pointObj = cmeta_get(self, "pointObjPtr", point_t *);
     printf("obj.pointObjPtr = {%i, %i};\n", pointObj->x, pointObj->y);
     int arrLen = cmeta_getArraySize(&CSAMPLE_T, "pointArr");
     printf("obj.pointArr[%i]:\n", arrLen);
     for (int i = 0; i < arrLen; i++) {
-        point_t * p = (point_t *)cmeta_getArrayItem(self, &CSAMPLE_T, "pointArr", i);
+        point_t * p = (point_t *)cmeta_getArrayItem(self, "pointArr", i);
         printf("\tobj.pointArr[%i] = {%i, %i};\n", i, p->x, p->y);
     }
     printf("\n");
