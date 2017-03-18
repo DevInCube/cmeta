@@ -118,8 +118,12 @@ int cmeta_getInteger(void * obj, const cmeta_struct_t * meta, const char * field
 
 void cmeta_setInteger(void * obj, const cmeta_struct_t * meta, const char * fieldName, int value) {
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
-    if ((NULL == field) || !cmeta_type_eq(field->type, &CINTEGER)) {
+    if ((NULL == field) 
+        || !(cmeta_type_eq(field->type, &CINTEGER) || cmeta_type_eq(field->type, &CBOOLEAN))) {
         return;
+    }
+    if (cmeta_type_eq(field->type, &CBOOLEAN)) {
+        value = value ? 1 : 0;
     }
     *(int *)CMETA_OFFSET(obj, field->offset) = value;
 }

@@ -97,6 +97,16 @@ void cmeta_setDouble(void * obj, const cmeta_struct_t *meta, const char * fieldN
 void * cmeta_getObject(void * obj, const cmeta_struct_t *meta, const char * fieldName);
 void cmeta_setObject(void * obj, const cmeta_struct_t *meta, const char * fieldName, void * value);
 
+#define cmeta_set(OBJ, META, FIELD_NAME, VAL)	\
+	_Generic((VAL),								\
+		const char *: cmeta_setString, 			\
+			  char *: cmeta_setString, 			\
+			    bool: cmeta_setBoolean,			\
+				 int: cmeta_setInteger,			\
+			  double: cmeta_setDouble,			\
+			 default: cmeta_setObject			\
+	)(OBJ, META, FIELD_NAME, VAL)
+
 int cmeta_getArraySize(const cmeta_struct_t *meta, const char * fieldName);
 void * cmeta_getArrayItem(void * obj, const cmeta_struct_t *meta, const char * fieldName, int index);
 void cmeta_setArrayItem(void * obj, const cmeta_struct_t *meta, const char * fieldName, int index, void * value);
