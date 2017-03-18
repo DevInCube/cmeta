@@ -46,3 +46,6 @@ install_manifest.txt
 examples/jmeta/cJSON/
 bin/
 obj/
+build/
+
+main.c
