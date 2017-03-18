@@ -8,14 +8,22 @@
 typedef struct cmeta_field_s cmeta_field_t;
 typedef struct cmeta_struct_s cmeta_struct_t;
 
+/**
+	@struct cmeta_field_s
+	@brief holds metainformation about c struct field
+*/
 struct cmeta_field_s {
-	const char *    name;
-	const cmeta_struct_t * type;
-	const size_t    offset;
-	const int       isPointer;
-	const size_t    arrSize;
+	const char *    name;			/**< struct field name */
+	const cmeta_struct_t * type;	/**< field metatype */
+	const size_t    offset;			/**< struct field offset */
+	const int       isPointer;		/**< for pointer fields */
+	const size_t    arrSize;		/**< for array fields */
 };
 
+/**
+	@struct cmeta_struct_s
+	@brief holds metainformation about c struct 
+*/
 struct cmeta_struct_s {
 	const char *	name;
 	const size_t	size;
@@ -23,12 +31,16 @@ struct cmeta_struct_s {
 	const size_t	fieldsSize;
 };
 
-#define __LEN(X) (sizeof(X)/sizeof(X[0]))
+#define __LEN(X) (sizeof((X)) / sizeof((X)[0]))
 #define __CMETA_FIELDS(CMETATYPENAME) __ ## CMETATYPENAME ## __fields
 
 #define CMETA_TYPE_VAR 	static const cmeta_struct_t
 #define CMETA_FIELD_VAR static const cmeta_field_t
 
+/**
+	@param TYPENAME
+	@param TYPE
+*/
 #define CMETA_TYPE(TYPENAME, TYPE)  \
     CMETA_TYPE_VAR TYPENAME = {     \
         .name       = #TYPENAME,    \
@@ -37,6 +49,12 @@ struct cmeta_struct_s {
         .fieldsSize = 0,            \
     }
 
+/**
+	@brief a macro to define meta type for existing c struct
+	@param CLASSNAME - a name for meta type
+	@param TYPE	- a name of exiting c struct
+	@param ... - a variadic list of cmeta_field_t items
+*/
 #define CMETA_STRUCT(CLASSNAME, TYPE, ...)						\
 	CMETA_FIELD_VAR __CMETA_FIELDS(CLASSNAME)[] = __VA_ARGS__;	\
 	CMETA_TYPE_VAR CLASSNAME = { 								\
@@ -97,6 +115,14 @@ void cmeta_setDouble(void * obj, const cmeta_struct_t *meta, const char * fieldN
 void * cmeta_getObject(void * obj, const cmeta_struct_t *meta, const char * fieldName);
 void cmeta_setObject(void * obj, const cmeta_struct_t *meta, const char * fieldName, void * value);
 
+int cmeta_getArraySize(const cmeta_struct_t *meta, const char * fieldName);
+void * cmeta_getArrayItem(void * obj, const cmeta_struct_t *meta, const char * fieldName, int index);
+void cmeta_setArrayItem(void * obj, const cmeta_struct_t *meta, const char * fieldName, int index, void * value);
+
+/**
+	@brief a generalized macro for get-functions
+	Note that bools are treated as ints here
+*/
 #define cmeta_get(OBJ, META, FIELD_NAME, TYPE)  \
 	_Generic((TYPE)0,							\
 		const char *: cmeta_getString, 			\
@@ -108,7 +134,7 @@ void cmeta_setObject(void * obj, const cmeta_struct_t *meta, const char * fieldN
 	)(OBJ, META, FIELD_NAME)
 
 /**
-	@brief a generalized set function
+	@brief a generalized macro for set-functions
 	Note that bools are treated as ints here
 */
 #define cmeta_set(OBJ, META, FIELD_NAME, VAL)	\
@@ -119,7 +145,3 @@ void cmeta_setObject(void * obj, const cmeta_struct_t *meta, const char * fieldN
 			  double: cmeta_setDouble,			\
 			 default: cmeta_setObject			\
 	)(OBJ, META, FIELD_NAME, VAL)
-
-int cmeta_getArraySize(const cmeta_struct_t *meta, const char * fieldName);
-void * cmeta_getArrayItem(void * obj, const cmeta_struct_t *meta, const char * fieldName, int index);
-void cmeta_setArrayItem(void * obj, const cmeta_struct_t *meta, const char * fieldName, int index, void * value);
