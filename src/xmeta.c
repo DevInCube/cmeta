@@ -103,6 +103,10 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
                 continue;
             }
             void * innerObj = cmeta_get(metaObj, cname, void *);
+            if (innerObj == NULL) {
+                // @todo error deserialising into NULL pointer
+                continue;
+            }
             _xmeta_deserialize(innerObj, xfield->type, innerNode);
             continue;
         } else if (cmeta_isArray(cfield)) {

@@ -107,7 +107,7 @@ void sample_clear_fields(sample_t * self) {
     strcpy(self->stringBuf, "");
     self->stringPtr = NULL;
     self->pointObj = (point_t){0, 0};
-    // self->pointObjPtr = NULL;
+    self->pointObjPtr = NULL;
     for (int i = 0; i < 5; i++) {
         self->pointArr[i] = (point_t){0, 0};
     }
@@ -120,10 +120,18 @@ void sample_cmeta_print(sample_t * sample) {
     printf("obj.integer = %i;\n", cmeta_get(self, "integer", int));
     printf("obj._double = %f;\n", cmeta_get(self, "_double", double));
     printf("obj.stringBuf = \"%s\";\n", cmeta_get(self, "stringBuf", char *));
+    const char * stringPtr = cmeta_get(self, "stringPtr", char *);
+    if (stringPtr != NULL)
+        printf("obj.stringPtr = \"%s\";\n", stringPtr);
+    else
+        printf("obj.stringPtr = NULL;\n");
     point_t * pointObj = cmeta_get(self, "pointObj", point_t *);
     printf("obj.pointObj = {%i, %i};\n", pointObj->x, pointObj->y);
     pointObj = cmeta_get(self, "pointObjPtr", point_t *);
-    printf("obj.pointObjPtr = {%i, %i};\n", pointObj->x, pointObj->y);
+    if (pointObj != NULL)
+        printf("obj.pointObjPtr = {%i, %i};\n", pointObj->x, pointObj->y);
+    else 
+        printf("obj.pointObjPtr = NULL;\n");
     int arrLen = cmeta_getArraySize(self, "pointArr");
     printf("obj.pointArr[%i]:\n", arrLen);
     for (int i = 0; i < arrLen; i++) {
