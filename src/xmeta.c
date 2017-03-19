@@ -1,6 +1,6 @@
 /**
     Current RESTRICTIONS:
-    - cannot deserialize strings to char * fileds
+    - cannot deserialize to pointer fields
 */
 
 #include <stdlib.h>
@@ -69,7 +69,7 @@ const char * xmeta_serialize(void * obj, const xmeta_struct_t * xmeta) {
     xmlBuffer * bufferPtr = xmlBufferCreate();
 	xmlNodeDump(bufferPtr, NULL, (xmlNode *)xdoc, 0, 1);
 	const char * content = (const char *)bufferPtr->content;
-	char * strdup = malloc(sizeof(char) * strlen(content) + 1);
+	char * strdup = malloc(sizeof(char) * (strlen(content) + 1));
 	strcpy(strdup, content);
 	xmlBufferFree(bufferPtr);
     return (const char *)strdup;
