@@ -89,7 +89,7 @@ int main(void) {
 
     // XML
 
-    const char * xmlString = xmeta_serialize((void *)obj->ptr, &XSAMPLE_T);
+    const char * xmlString = xmeta_serialize_root((void *)obj->ptr, &XSAMPLE_T, "sample");
     puts(xmlString);
 
     //sample_clear_fields((sample_t *)obj->ptr);

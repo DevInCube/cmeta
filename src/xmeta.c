@@ -47,8 +47,7 @@ static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode *
             snprintf(buf, MAX_NUMBER_LENGTH, "%f", value);
             xvalue = buf;
         } else if (cmeta_type_eq(cfield->type, &CSTRING)) {
-            const char * value = cmeta_get(metaObj, cname, const char *);
-            xvalue = value;
+            xvalue = cmeta_get(metaObj, cname, const char *);
         }
         if (xfield->isAttribute) {
             xmlNewProp(xnode, BAD_CAST xname, BAD_CAST xvalue);
