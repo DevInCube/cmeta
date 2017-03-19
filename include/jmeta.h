@@ -21,17 +21,14 @@ struct jmeta_struct_s {
 
 #define __JMETA_FIELDS(JMETATYPENAME) __ ## JMETATYPENAME ## __fields
 
-#define JMETA_TYPE_VAR 	static const jmeta_struct_t
-#define JMETA_FIELD_VAR static const jmeta_field_t
-
 /**
     @param JTYPENAME - new json meta type name
     @param CTYPENAME - c struct meta type name defined above
     @param ... - a variadic list of jmeta_field_t items
 */
 #define JMETA_STRUCT(JTYPENAME, CTYPENAME, ...)                 \
-    JMETA_TYPE_VAR __JMETA_FIELDS(JTYPENAME)[] = __VA_ARGS__;	\
-	JMETA_FIELD_VAR JTYPENAME = { 					            \
+    static const jmeta_field_t __JMETA_FIELDS(JTYPENAME)[] = __VA_ARGS__;	\
+	static const jmeta_struct_t JTYPENAME = { 					            \
 		.name 		= #JTYPENAME,								\
 		.metaType	= & CTYPENAME,								\
 		.fields 	= __JMETA_FIELDS(JTYPENAME), 				\
@@ -49,3 +46,4 @@ struct jmeta_struct_s {
 
 const char * jmeta_serialize(void * obj, const jmeta_struct_t * jmeta);
 void jmeta_deserialize(void * obj, const jmeta_struct_t * jtype, const char * jstr);
+void * jmeta_deserialize_new(const jmeta_struct_t * jtype, const char * jstr);

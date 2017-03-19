@@ -5,6 +5,7 @@
 
 #include <cmeta.h>
 #include <xmeta.h>
+#include <jmeta.h>
 
 typedef struct {
     int x;
@@ -19,6 +20,11 @@ CMETA_STRUCT(CPOINT_T, point_t, {
 XMETA_STRUCT(XPOINT_T, CPOINT_T, {
     XMETA_ATTR(x, AUTO),
     XMETA_ATTR(y, AUTO),
+});
+
+JMETA_STRUCT(JPOINT_T, CPOINT_T, {
+    JMETA(x, AUTO),
+    JMETA(y, AUTO)
 });
 
 typedef struct {
@@ -52,6 +58,17 @@ XMETA_STRUCT(XSAMPLE_T, CSAMPLE_T, {
     XMETA_OBJ(pointObj, XPOINT_T, AUTO),
     XMETA_OBJ(pointObjPtr, XPOINT_T, AUTO),
     XMETA_ARR(pointArr, XPOINT_T, "pt", AUTO)
+});
+
+JMETA_STRUCT(JSAMPLE_T, CSAMPLE_T, {
+    JMETA(boolean, AUTO),
+    JMETA(integer, AUTO),
+    JMETA(_double, AUTO),
+    JMETA(stringBuf, AUTO),
+    JMETA(stringPtr, AUTO),
+    JMETA_OBJ(pointObj, JPOINT_T, AUTO),
+    JMETA_OBJ(pointObjPtr, JPOINT_T, AUTO),
+    JMETA_ARR(pointArr, JPOINT_T, AUTO),
 });
 
 void sample_cmeta_print(cmeta_object_t * self);
@@ -104,6 +121,18 @@ int main(void) {
     free(newSample);
 
     free((void *)xmlString);
+
+    // JSON
+
+    const char * jsonString = jmeta_serialize((void *)obj->ptr, &JSAMPLE_T);
+    puts(jsonString);
+
+    newSample = (sample_t *)jmeta_deserialize_new(&JSAMPLE_T, jsonString);
+    newObj = cmeta_cast_object(newSample, &CSAMPLE_T);
+    sample_cmeta_print(newObj);
+    free(newSample);
+
+    free((void *)jsonString);
 
     return 0;
 }

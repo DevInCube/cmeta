@@ -16,4 +16,4 @@ install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION /usr/local/lib)
 
 project(main)
 add_executable(${CMAKE_PROJECT_NAME} "main.c" ${LIB_SOURCES})
-target_link_libraries(${CMAKE_PROJECT_NAME} xml2)
+target_link_libraries(${CMAKE_PROJECT_NAME} xml2 jansson)
