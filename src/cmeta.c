@@ -82,13 +82,10 @@ const char * cmeta_getString(cmeta_object_t * self, const char * fieldName) {
     if ((NULL == field) || !cmeta_type_eq(field->type, &CSTRING)) {
         return NULL;
     }
-    if (field->isPointer) {
-        const char * str = (const char *)VALUE_POINTER(CMETA_OFFSET(obj, field->offset));
-        return str;
-    } else {
-        const char * str = (const char *)CMETA_OFFSET(obj, field->offset);
-        return str;
-    }
+    const char * offset = CMETA_OFFSET(obj, field->offset);
+    return field->isPointer
+        ? (const char *)VALUE_POINTER(offset)
+        : offset;
 }
 
 void cmeta_setString(cmeta_object_t * self, const char * fieldName, const char * value) {
@@ -135,6 +132,7 @@ void cmeta_setInteger(cmeta_object_t * self, const char * fieldName, int value) 
     const cmeta_field_t * field = cmeta_struct_getField(meta, fieldName);
     if ((NULL == field) 
         || !(cmeta_type_eq(field->type, &CINTEGER) || cmeta_type_eq(field->type, &CBOOLEAN))) {
+        // @todo add some errors here
         return;
     }
     if (cmeta_type_eq(field->type, &CBOOLEAN)) {

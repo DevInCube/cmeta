@@ -54,7 +54,7 @@ XMETA_STRUCT(XSAMPLE_T, CSAMPLE_T, {
     XMETA_ARR(pointArr, XPOINT_T, "pt", AUTO)
 });
 
-void sample_cmeta_print(sample_t * self);
+void sample_cmeta_print(cmeta_object_t * self);
 void sample_clear_fields(sample_t * self);
 
 int main(void) {
@@ -73,28 +73,35 @@ int main(void) {
         .pointObjPtr = &point,
         .pointArr = { point, point2, {0, 0}, {1, 1}, {2, 2}}
     };
-    sample_cmeta_print(&sample);
 
     cmeta_object_t * obj = cmeta_cast_object(&sample, &CSAMPLE_T);
+
+    // dynamic value get
+    sample_cmeta_print(obj);
+
+    // dynamic value set
+    cmeta_set(obj, "nonexisingfield", 123);  // @todo add and handle errors here
+    cmeta_set(obj, "boolean", "Hello");  // @todo add and handle mistype error
     cmeta_set(obj, "boolean", true);
     cmeta_set(obj, "integer", 999);
     cmeta_set(obj, "_double", 19.93);
-    cmeta_set(obj, "stringBuf", "I am string");  // overflow here
-    cmeta_set(obj, "stringBuf", "I set a new string here");  // overflow here
+    cmeta_set(obj, "stringBuf", "I am string");
+    cmeta_set(obj, "stringBuf", "I set a new string here");  // @todo overflow here
     cmeta_set(obj, "pointObj", &point);
     cmeta_set(obj, "pointObjPtr", &point2);
     cmeta_setArrayItem(obj, "pointArr", 2, &((point_t){ 9999, -7777 }));
     cmeta_setArrayItem(obj, "pointArr", 4, &((point_t){ 1111, -7777 }));
-    sample_cmeta_print(&sample);
+    sample_cmeta_print(obj);
 
     // XML
 
     const char * xmlString = xmeta_serialize_root((void *)obj->ptr, &XSAMPLE_T, "sample");
     puts(xmlString);
 
-    sample_t * newObj = (sample_t *)xmeta_deserialize_new(&XSAMPLE_T, xmlString);
+    sample_t * newSample = (sample_t *)xmeta_deserialize_new(&XSAMPLE_T, xmlString);
+    cmeta_object_t * newObj = cmeta_cast_object(newSample, &CSAMPLE_T);
     sample_cmeta_print(newObj);
-    free(newObj);
+    free(newSample);
 
     free((void *)xmlString);
 
@@ -114,9 +121,8 @@ void sample_clear_fields(sample_t * self) {
     }
 }
 
-void sample_cmeta_print(sample_t * sample) {
+void sample_cmeta_print(cmeta_object_t * self) {
     printf("\nsample_T obj;\n");
-    cmeta_object_t * self = cmeta_cast_object(sample, &CSAMPLE_T);
     printf("obj.boolean = %i;\n", cmeta_get(self, "boolean", bool));
     printf("obj.integer = %i;\n", cmeta_get(self, "integer", int));
     printf("obj._double = %f;\n", cmeta_get(self, "_double", double));
