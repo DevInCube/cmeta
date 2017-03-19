@@ -32,11 +32,12 @@ static void cmeta_struct_print_lvl(const cmeta_struct_t * metaType, const cmeta_
 	for (int i = 0; i < lvl * spaces; i++) { pad[i] = ' '; };
 	pad[lvl * spaces] = '\0';
 	printf("%s", pad);
-	printf("%-10s", metaType->name);
 	if (NULL != field) {
         char * ptrstr = (field->isPointer) ? " *" : "";
-		printf("%s %-10s __(%zu)", ptrstr, field->name, field->offset);
-	}
+		printf("%3zu: %-10s %s %-10s", field->offset, metaType->name, ptrstr, field->name);
+	} else {
+        printf("%-10s", metaType->name);
+    }
 	printf("\n");
 	for (int i = 0; i < metaType->fieldsSize; i++) {
 		const cmeta_field_t * meta = metaType->fields + i;
@@ -44,17 +45,17 @@ static void cmeta_struct_print_lvl(const cmeta_struct_t * metaType, const cmeta_
 			cmeta_struct_print_lvl(meta->type, meta, lvl + 1);
 		} else if (cmeta_isArray(meta)) {
 			printf("%s", pad);
-			printf("    %-10s<%s> %-10s[%zu] __(%zu):\n",
-				cmeta_toString(meta->type), meta->type->name, meta->name, meta->arrSize, meta->offset);
+			printf("    %3zu: %-10s %s[%zu]\n",
+				meta->offset, cmeta_toString(meta->type), meta->name, meta->arrSize);
 		} else {
 			printf("%s", pad);
 			char arrSizeStr[10] = "";
 			if (meta->arrSize > 0) {
-                snprintf(arrSizeStr, 10, " [%zu]", meta->arrSize);
+                snprintf(arrSizeStr, 10, "[%zu]", meta->arrSize);
 			}
 			const char * ptrStr = (meta->isPointer) ? " *" : "";
-			printf("    %-10s%s %-10s%s __(%zu)\n",
-				cmeta_toString(meta->type), ptrStr, meta->name, arrSizeStr, meta->offset);
+			printf("    %3zu: %-10s %s %s%s\n",
+				meta->offset, cmeta_toString(meta->type), ptrStr, meta->name, arrSizeStr);
 		}
 	}
 	free(pad);
