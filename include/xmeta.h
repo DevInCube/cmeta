@@ -37,10 +37,10 @@ struct xmeta_struct_s {
 #define XELEM 0
 
 #define XMETA(FIELD, NAME)  \
-    { ((NAME) ? NAME : #FIELD),  #FIELD, NULL, XELEM, NULL }
+    { ((NAME) ? NAME : #FIELD), #FIELD, NULL, XELEM, NULL }
 
 #define XMETA_ATTR(FIELD, NAME)  \
-    { ((NAME) ? NAME : #FIELD),  #FIELD, NULL, XATTR,NULL }
+    { ((NAME) ? NAME : #FIELD), #FIELD, NULL, XATTR, NULL }
 
 #define XMETA_OBJ(FIELD, XMETATYPE, NAME) \
     { ((NAME) ? NAME : #FIELD), #FIELD, & XMETATYPE, XELEM, NULL }
