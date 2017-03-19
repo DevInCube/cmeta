@@ -26,13 +26,6 @@ static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode *
             void * innerObj = cmeta_get(metaObj, cname, void *);
             _xmeta_serialize(innerObj, xfield->type, xnode, xname);
             continue;
-        } else if (cmeta_isArray(cfield)) {
-            xmlNode * listNode = xmlNewChild(xnode, NULL, (unsigned char *)xname, NULL);
-            size_t arrSize = cmeta_getArraySize(metaObj, cname);
-            for (int itemIndex = 0; itemIndex < arrSize; itemIndex++) {
-                void * arrItem = cmeta_getArrayItem(metaObj, cname, itemIndex);
-                _xmeta_serialize(arrItem, xfield->type, listNode, xfield->arrItemName);
-            }
         } else if (cmeta_type_eq(cfield->type, &CBOOLEAN)) {
             bool value = cmeta_get(metaObj, cname, bool);
             xvalue = (value) ? "true" : "false";
@@ -53,8 +46,13 @@ static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode *
         if (xfield->isAttribute) {
             xmlNewProp(xnode, (unsigned char *)xname, (unsigned char *)xvalue);
         } else {
-            if (!cmeta_isArray(cfield)) {
-                xmlNewChild(xnode, NULL, (unsigned char *)xname, (unsigned char *)xvalue);
+            xmlNode * newNode = xmlNewChild(xnode, NULL, (unsigned char *)xname, (unsigned char *)xvalue);
+            if (cmeta_isArray(cfield)) {
+                size_t arrSize = cmeta_getArraySize(metaObj, cname);
+                for (int itemIndex = 0; itemIndex < arrSize; itemIndex++) {
+                    void * arrItem = cmeta_getArrayItem(metaObj, cname, itemIndex);
+                    _xmeta_serialize(arrItem, xfield->type, newNode, xfield->arrItemName);
+                }
             }
         }
     }
