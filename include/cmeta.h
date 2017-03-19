@@ -81,11 +81,25 @@ CMETA_TYPE(CINTEGER, int);
 CMETA_TYPE(CDOUBLE, double);
 CMETA_TYPE(CSTRING, char[1]);
 
-#define CMETA(TYPE, FIELD, CMETATYPE) \
-	{ #FIELD, & CMETATYPE, offsetof(TYPE, FIELD), 0, 0 }
+#define FIELD_EXPR(TYPE, FIELD) (((TYPE *)NULL)->FIELD)
+#define TYPE_OF(TYPE, FIELD)		  	\
+	_Generic(FIELD_EXPR(TYPE, FIELD), 	\
+				int: CINTEGER, 			\
+			 double: CDOUBLE, 			\
+			   bool: CBOOLEAN, 			\
+			default: CINTEGER)
 
-#define CMETA_STR(TYPE, FIELD, LENGTH) \
-	{ #FIELD, & CSTRING, offsetof(TYPE, FIELD), 0, LENGTH }
+#define CMETA(TYPE, FIELD) \
+	{ #FIELD, & TYPE_OF(TYPE, FIELD), offsetof(TYPE, FIELD), 0, 0 }
+
+// #define CMETA(TYPE, FIELD, CMETATYPE) \
+// 	{ #FIELD, & CMETATYPE, offsetof(TYPE, FIELD), 0, 0 }
+
+// #define CMETA_STR(TYPE, FIELD, LENGTH) \
+// 	{ #FIELD, & CSTRING, offsetof(TYPE, FIELD), 0, LENGTH }
+
+#define CMETA_STR(TYPE, FIELD) \
+	{ #FIELD, & CSTRING, offsetof(TYPE, FIELD), 0, __LEN(FIELD_EXPR(TYPE, FIELD)) }
 
 #define CMETA_STR_PTR(TYPE, FIELD) \
 	{ #FIELD, & CSTRING, offsetof(TYPE, FIELD), 1, 0 }
@@ -96,8 +110,8 @@ CMETA_TYPE(CSTRING, char[1]);
 #define CMETA_OBJ_PTR(TYPE, FIELD, CMETATYPE) \
 	{ #FIELD, & CMETATYPE, offsetof(TYPE, FIELD), 1, 0 }
 
-#define CMETA_ARR(TYPE, FIELD, CMETATYPE, ARRLEN) \
-	{ #FIELD, & CMETATYPE, offsetof(TYPE, FIELD), 0, ARRLEN}
+#define CMETA_ARR(TYPE, FIELD, CMETATYPE) \
+	{ #FIELD, & CMETATYPE, offsetof(TYPE, FIELD), 0, __LEN(FIELD_EXPR(TYPE, FIELD)) }
 
 #define CMETA_OFFSET(PTR, OFFSET) ((void *)((char *)PTR + OFFSET))
 #define VALUE_POINTER(POINTER) ((void *)(*(intptr_t *)POINTER))

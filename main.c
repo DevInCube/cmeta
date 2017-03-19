@@ -10,8 +10,8 @@ typedef struct {
 } point_t;
 
 CMETA_STRUCT(CPOINT_T, point_t, {
-    CMETA(point_t, x, CINTEGER),
-    CMETA(point_t, y, CINTEGER)
+    CMETA(point_t, x),
+    CMETA(point_t, y)
 });
 
 typedef struct {
@@ -26,14 +26,14 @@ typedef struct {
 } sample_t;
 
 CMETA_STRUCT(CSAMPLE_T, sample_t, {
-    CMETA(sample_t, boolean, CBOOLEAN),
-    CMETA(sample_t, integer, CINTEGER),
-    CMETA(sample_t, _double, CDOUBLE),
-    CMETA_STR(sample_t, stringBuf, 20),
+    CMETA(sample_t, boolean),
+    CMETA(sample_t, integer),
+    CMETA(sample_t, _double),
+    CMETA_STR(sample_t, stringBuf),
     CMETA_STR_PTR(sample_t, stringPtr),
     CMETA_OBJ(sample_t, pointObj, CPOINT_T),
     CMETA_OBJ_PTR(sample_t, pointObjPtr, CPOINT_T),
-    CMETA_ARR(sample_t, pointArr, CPOINT_T, 5),
+    CMETA_ARR(sample_t, pointArr, CPOINT_T),
 });
 
 void sample_cmeta_print(sample_t * self);
