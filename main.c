@@ -16,8 +16,8 @@ CMETA_STRUCT(CPOINT_T, point_t, {
 });
 
 XMETA_STRUCT(XPOINT_T, CPOINT_T, {
-    XMETA(x, AUTO),
-    XMETA(y, AUTO),
+    XMETA_ATTR(x, AUTO),
+    XMETA_ATTR(y, AUTO),
 });
 
 typedef struct {
@@ -46,6 +46,11 @@ XMETA_STRUCT(XSAMPLE_T, CSAMPLE_T, {
     XMETA(boolean, AUTO),
     XMETA(integer, AUTO),
     XMETA(_double, AUTO),
+    XMETA(stringBuf, AUTO),
+    XMETA(stringPtr, AUTO),
+    XMETA_OBJ(pointObj, XPOINT_T, AUTO),
+    XMETA_OBJ(pointObjPtr, XPOINT_T, AUTO),
+    XMETA_ARR(pointArr, XPOINT_T, "pt", AUTO)
 });
 
 void sample_cmeta_print(sample_t * self);

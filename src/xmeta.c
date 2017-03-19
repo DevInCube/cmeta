@@ -53,7 +53,9 @@ static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode *
         if (xfield->isAttribute) {
             xmlNewProp(xnode, (unsigned char *)xname, (unsigned char *)xvalue);
         } else {
-            xmlNewChild(xnode, NULL, (unsigned char *)xname, (unsigned char *)xvalue);
+            if (!cmeta_isArray(cfield)) {
+                xmlNewChild(xnode, NULL, (unsigned char *)xname, (unsigned char *)xvalue);
+            }
         }
     }
 }
