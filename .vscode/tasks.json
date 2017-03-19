@@ -8,5 +8,5 @@
 		"-e",
 		"/bin/bash -c './build/main; exec /bin/bash -i'"
 	],
-"showOutput": "always"
+	"showOutput": "always"
 }
