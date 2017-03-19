@@ -17,7 +17,7 @@
 #define MAX_NUMBER_LENGTH 20
 
 static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xparent, const char * key) {
-    xmlNode * xnode = xmlNewChild(xparent, NULL, (unsigned char *)key, NULL);
+    xmlNode * xnode = xmlNewChild(xparent, NULL, BAD_CAST key, NULL);
     for (int i = 0; i < xmeta->fieldsSize; i++) {
         const xmeta_field_t * xfield = xmeta->fields + i;
         const cmeta_field_t * cfield = cmeta_struct_getField(xmeta->metaType, xfield->fieldName);
@@ -51,9 +51,9 @@ static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode *
             xvalue = value;
         }
         if (xfield->isAttribute) {
-            xmlNewProp(xnode, (unsigned char *)xname, (unsigned char *)xvalue);
+            xmlNewProp(xnode, BAD_CAST xname, BAD_CAST xvalue);
         } else {
-            xmlNode * newNode = xmlNewChild(xnode, NULL, (unsigned char *)xname, (unsigned char *)xvalue);
+            xmlNode * newNode = xmlNewChild(xnode, NULL, BAD_CAST xname, BAD_CAST xvalue);
             if (cmeta_isArray(cfield)) {
                 size_t arrSize = cmeta_getArraySize(metaObj, cname);
                 for (int itemIndex = 0; itemIndex < arrSize; itemIndex++) {
@@ -70,7 +70,7 @@ const char * xmeta_serialize(void * obj, const xmeta_struct_t * xmeta) {
 }
 
 const char * xmeta_serialize_root(void * obj, const xmeta_struct_t * xmeta, const char * rootName) {
-    xmlDoc * xdoc = xmlNewDoc((unsigned char *)"1.0");
+    xmlDoc * xdoc = xmlNewDoc(BAD_CAST "1.0");
     _xmeta_serialize(obj, xmeta, (xmlNode *)xdoc, rootName);
     xmlBuffer * bufferPtr = xmlBufferCreate();
 	xmlNodeDump(bufferPtr, NULL, (xmlNode *)xdoc, 0, 1);
@@ -83,7 +83,7 @@ const char * xmeta_serialize_root(void * obj, const xmeta_struct_t * xmeta, cons
 
 static xmlNode * _xml_getNodeByKey(xmlNode * xnode, const char * key) {
     for (xmlNode * xI = xnode->children; xI; xI = xI->next) {
-        if(xmlStrcmp(xI->name, (unsigned char *)key) == 0) {
+        if(xmlStrcmp(xI->name, BAD_CAST key) == 0) {
             return xI;
         }
     }
@@ -134,7 +134,7 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
             }
         } else {
             char * value = (char *)(xfield->isAttribute 
-                ? xmlGetProp(xnode, (unsigned char *)xname)
+                ? xmlGetProp(xnode, BAD_CAST xname)
                 : xmlNodeGetContent(innerNode));
             size_t valueLength = strlen(value) + 1;
             char * content = malloc(sizeof(char) * valueLength);
