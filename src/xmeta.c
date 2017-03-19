@@ -149,6 +149,7 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
                 cmeta_set(metaObj, cname, (const char *)content);
             }
             free((void *)content);
+            xmlFree(BAD_CAST value);
         }
     }
 }
