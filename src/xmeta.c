@@ -8,11 +8,13 @@
 #include <string.h>
 
 #include <cmeta.h>
-#include "xmeta.h"
+#include <xmeta.h>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
+
+#define MAX_NUMBER_LENGTH 20
 
 static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xparent, const char * key) {
     xmlNode * xnode = xmlNewChild(xparent, NULL, (unsigned char *)key, NULL);
@@ -36,13 +38,13 @@ static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode *
             xvalue = (value) ? "true" : "false";
         } else if (cmeta_type_eq(cfield->type, &CINTEGER)) {
             int value = cmeta_get(metaObj, cname, int);
-            char buf[20] = "";
-            snprintf(buf, 20, "%i", value);
+            char buf[MAX_NUMBER_LENGTH] = "";
+            snprintf(buf, MAX_NUMBER_LENGTH, "%i", value);
             xvalue = buf;
         } else if (cmeta_type_eq(cfield->type, &CDOUBLE)) {
             double value = cmeta_get(metaObj, cname, double);
-            char buf[20] = "";
-            snprintf(buf, 20, "%f", value);
+            char buf[MAX_NUMBER_LENGTH] = "";
+            snprintf(buf, MAX_NUMBER_LENGTH, "%f", value);
             xvalue = buf;
         } else if (cmeta_type_eq(cfield->type, &CSTRING)) {
             const char * value = cmeta_get(metaObj, cname, const char *);
@@ -64,8 +66,12 @@ static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode *
 }
 
 const char * xmeta_serialize(void * obj, const xmeta_struct_t * xmeta) {
+    return xmeta_serialize_root(obj, xmeta, "root");
+}
+
+const char * xmeta_serialize_root(void * obj, const xmeta_struct_t * xmeta, const char * rootName) {
     xmlDoc * xdoc = xmlNewDoc((unsigned char *)"1.0");
-    _xmeta_serialize(obj, xmeta, (xmlNode *)xdoc, "root");
+    _xmeta_serialize(obj, xmeta, (xmlNode *)xdoc, rootName);
     xmlBuffer * bufferPtr = xmlBufferCreate();
 	xmlNodeDump(bufferPtr, NULL, (xmlNode *)xdoc, 0, 1);
 	const char * content = (const char *)bufferPtr->content;

@@ -49,4 +49,5 @@ struct xmeta_struct_s {
     { ((NAME) ? NAME : #FIELD), #FIELD, & XMETATYPE, XELEM, ITEMNAME }
 
 const char * xmeta_serialize(void * obj, const xmeta_struct_t * xmeta);
+const char * xmeta_serialize_root(void * obj, const xmeta_struct_t * xmeta, const char * rootName);
 void xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, const char * xmlStr);
