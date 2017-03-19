@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include <cmeta.h>
+#include <xmeta.h>
 
 typedef struct {
     int x;
@@ -12,6 +13,11 @@ typedef struct {
 CMETA_STRUCT(CPOINT_T, point_t, {
     CMETA(point_t, x),
     CMETA(point_t, y)
+});
+
+XMETA_STRUCT(XPOINT_T, CPOINT_T, {
+    XMETA(x, AUTO),
+    XMETA(y, AUTO),
 });
 
 typedef struct {
@@ -34,6 +40,12 @@ CMETA_STRUCT(CSAMPLE_T, sample_t, {
     CMETA_OBJ(sample_t, pointObj, CPOINT_T),
     CMETA_OBJ_PTR(sample_t, pointObjPtr, CPOINT_T),
     CMETA_ARR(sample_t, pointArr, CPOINT_T),
+});
+
+XMETA_STRUCT(XSAMPLE_T, CSAMPLE_T, {
+    XMETA(boolean, AUTO),
+    XMETA(integer, AUTO),
+    XMETA(_double, AUTO),
 });
 
 void sample_cmeta_print(sample_t * self);
@@ -66,6 +78,12 @@ int main(void) {
     cmeta_setArrayItem(obj, "pointArr", 2, &((point_t){ 9999, -7777 }));
     cmeta_setArrayItem(obj, "pointArr", 4, &((point_t){ 1111, -7777 }));
     sample_cmeta_print(&sample);
+
+    // XML
+
+    const char * xmlString = xmeta_serialize((void *)obj->ptr, &XSAMPLE_T);
+    puts(xmlString);
+    free((void *)xmlString);
 
     return 0;
 }

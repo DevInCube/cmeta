@@ -5,6 +5,7 @@
 		"-Wall",
 		"-Werror",
 		"-Iinclude",
-		"-I../include"
+		"-I../include",
+		"-I/usr/include/libxml2"
 	]
 }

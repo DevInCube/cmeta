@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "cmeta.h"
+#include <cmeta.h>
 
 const char * cmeta_toString(const cmeta_struct_t * type) {
     return type->name;
