@@ -83,7 +83,7 @@ const char * xmeta_serialize_root(void * obj, const xmeta_struct_t * xmeta, cons
 
 static xmlNode * _xml_getNodeByKey(xmlNode * xnode, const char * key) {
     for (xmlNode * xI = xnode->children; xI; xI = xI->next) {
-        if(xmlStrcmp(xI->name, BAD_CAST key) == 0) {
+        if(xI->type == XML_ELEMENT_NODE && xmlStrcmp(xI->name, BAD_CAST key) == 0) {
             return xI;
         }
     }
