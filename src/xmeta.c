@@ -1,3 +1,8 @@
+/**
+    Current RESTRICTIONS:
+    - cannot deserialize strings to char * fileds
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -107,9 +112,12 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
             }
             size_t cArrSize = cmeta_getArraySize(metaObj, cname);
             int index = 0;
-            for (xmlNode * xI = innerNode->children; xI && (index < cArrSize); xI = xI->next, index++) {
-                void * itemObj = cmeta_getArrayItem(metaObj, cname, index);
-                _xmeta_deserialize(itemObj, xfield->type, xI);
+            for (xmlNode * xI = innerNode->children; xI && (index < cArrSize); xI = xI->next) {
+                if (xI->type == XML_ELEMENT_NODE) {
+                    void * itemObj = cmeta_getArrayItem(metaObj, cname, index);
+                    _xmeta_deserialize(itemObj, xfield->type, xI);
+                    index++;
+                }
             }
         } else {
             char * content = NULL;

@@ -100,6 +100,11 @@ void cmeta_setString(cmeta_object_t * self, const char * fieldName, const char *
     }
     if (field->isPointer) {
         const char ** str = (const char **)VALUE_POINTER(CMETA_OFFSET(obj, field->offset));
+        //const char ** str = (const char **)(&(CMETA_OFFSET(obj, field->offset)));
+        if (str == NULL) {
+            // @todo error here
+            return;
+        }
         *str = value;
     } else {
         char * str = (char *)CMETA_OFFSET(obj, field->offset);

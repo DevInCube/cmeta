@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include <cmeta.h>
 #include <xmeta.h>
@@ -54,6 +55,7 @@ XMETA_STRUCT(XSAMPLE_T, CSAMPLE_T, {
 });
 
 void sample_cmeta_print(sample_t * self);
+void sample_clear_fields(sample_t * self);
 
 int main(void) {
     cmeta_struct_print(&CSAMPLE_T);
@@ -88,9 +90,27 @@ int main(void) {
 
     const char * xmlString = xmeta_serialize((void *)obj->ptr, &XSAMPLE_T);
     puts(xmlString);
+
+    sample_clear_fields((sample_t *)obj->ptr);
+    xmeta_deserialize((void *)obj->ptr, &XSAMPLE_T, xmlString);
+    sample_cmeta_print((sample_t *)obj->ptr);
+
     free((void *)xmlString);
 
     return 0;
+}
+
+void sample_clear_fields(sample_t * self) {
+    self->boolean = false;
+    self->integer = 0;
+    self->_double = 0.0;
+    strcpy(self->stringBuf, "");
+    self->stringPtr = NULL;
+    self->pointObj = (point_t){0, 0};
+    // self->pointObjPtr = NULL;
+    for (int i = 0; i < 5; i++) {
+        self->pointArr[i] = (point_t){0, 0};
+    }
 }
 
 void sample_cmeta_print(sample_t * sample) {
