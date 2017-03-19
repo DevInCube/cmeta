@@ -4,11 +4,13 @@
 		"-std=c11",
 		"-Wall",
 		"-Werror",
+		"-I./",
 		"-Iinclude",
 		"-I../include",
 		"-I/usr/include/libxml2"
 	],
 	"files.associations": {
-		"type_traits": "cpp"
+		"type_traits": "cpp",
+		"initializer_list": "cpp"
 	}
 }

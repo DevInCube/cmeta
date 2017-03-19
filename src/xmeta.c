@@ -77,6 +77,7 @@ const char * xmeta_serialize_root(void * obj, const xmeta_struct_t * xmeta, cons
 	char * strdup = malloc(sizeof(char) * (strlen(content) + 1));
 	strcpy(strdup, content);
 	xmlBufferFree(bufferPtr);
+    xmlFreeDoc(xdoc);
     return (const char *)strdup;
 }
 
@@ -157,4 +158,11 @@ void xmeta_deserialize(void * obj, const xmeta_struct_t * xtype, const char * xs
     xmlNode * xRoot = xmlDocGetRootElement(xDoc);
     _xmeta_deserialize(obj, xtype, xRoot);
     xmlFreeDoc(xDoc);
+}
+
+void * xmeta_deserialize_new(const xmeta_struct_t * xtype, const char * xstr) {
+    void * obj = malloc(xtype->metaType->size);
+    memset(obj, 0, xtype->metaType->size);
+    xmeta_deserialize(obj, xtype, xstr);
+    return obj;
 }

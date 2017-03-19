@@ -51,3 +51,4 @@ struct xmeta_struct_s {
 const char * xmeta_serialize(void * obj, const xmeta_struct_t * xmeta);
 const char * xmeta_serialize_root(void * obj, const xmeta_struct_t * xmeta, const char * rootName);
 void xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, const char * xmlStr);
+void * xmeta_deserialize_new(const xmeta_struct_t * xtype, const char * xstr);

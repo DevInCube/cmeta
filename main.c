@@ -92,9 +92,9 @@ int main(void) {
     const char * xmlString = xmeta_serialize_root((void *)obj->ptr, &XSAMPLE_T, "sample");
     puts(xmlString);
 
-    //sample_clear_fields((sample_t *)obj->ptr);
-    xmeta_deserialize((void *)obj->ptr, &XSAMPLE_T, xmlString);
-    sample_cmeta_print((sample_t *)obj->ptr);
+    sample_t * newObj = (sample_t *)xmeta_deserialize_new(&XSAMPLE_T, xmlString);
+    sample_cmeta_print(newObj);
+    free(newObj);
 
     free((void *)xmlString);
 

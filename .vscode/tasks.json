@@ -6,7 +6,7 @@
 	"args": [
 		"--tab",
 		"-e",
-		"/bin/bash -c './build/main; exec /bin/bash -i'"
+		"/bin/bash -c 'valgrind --leak-check=yes ./build/main; exec /bin/bash -i'"
 	],
 	"showOutput": "always"
 }
