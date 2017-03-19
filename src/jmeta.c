@@ -31,17 +31,13 @@ static json_t * _jmeta_serialize(void * obj, const jmeta_struct_t * jmeta) {
                 json_array_append_new(jItem, jArrItem);
             }
         } else if (cmeta_type_eq(cfield->type, &CBOOLEAN)) {
-            bool value = cmeta_get(metaObj, cname, bool);
-            jItem = json_boolean((int)value);
+            jItem = json_boolean(cmeta_get(metaObj, cname, bool));
         } else if (cmeta_type_eq(cfield->type, &CINTEGER)) {
-            int intValue = cmeta_get(metaObj, cname, int);
-            jItem = json_integer((double)intValue);
+            jItem = json_integer(cmeta_get(metaObj, cname, int));
         } else if (cmeta_type_eq(cfield->type, &CDOUBLE)) {
-            double value = cmeta_get(metaObj, cname, double);
-            jItem = json_real((double)value);
+            jItem = json_real(cmeta_get(metaObj, cname, double));
         } else if (cmeta_type_eq(cfield->type, &CSTRING)) {
-            const char * value = cmeta_get(metaObj, cname, const char *);
-            jItem = json_string(value);
+            jItem = json_string(cmeta_get(metaObj, cname, const char *));
         }
         json_object_set_new(j, jsonKey, jItem);
     }
@@ -70,6 +66,7 @@ void _jmeta_deserialize(void * obj, const jmeta_struct_t * jmeta, json_t * j) {
             // @todo error
             return;
         }
+        const cmeta_struct_t * ctype = cfield->type;
         const char * cname = cfield->name;
         const char * jsonKey = jfield->name;
         json_t * jItem = json_object_get(j, jsonKey);
@@ -82,29 +79,29 @@ void _jmeta_deserialize(void * obj, const jmeta_struct_t * jmeta, json_t * j) {
             _jmeta_deserialize(cobj, jfield->type, jItem);
         } else if (cmeta_isArray(cfield)) {
             size_t cArrSize = cmeta_getArraySize(metaObj, cname);
-            size_t jArrSize = (size_t) json_array_size(jItem);
             // @todo check and fail on STRICT
-            for (int index = 0; (index < jArrSize) && (index < cArrSize); index++) {
-                json_t * jEl = json_array_get(jItem, index);
+            size_t index = 0;
+            json_t * jEl = NULL;
+            json_array_foreach(jItem, index, jEl) {
+                if (index < cArrSize) {
+                    // @todo overflow error
+                    break;
+                }
                 void * cItem = cmeta_getArrayItem(metaObj, cname, index);
                 _jmeta_deserialize(cItem, jfield->type, jEl);
             }
-        } else if (cmeta_type_eq(cfield->type, &CBOOLEAN)) {
-            bool val = json_boolean_value(jItem);
-            cmeta_set(metaObj, cname, val);
-        } else if (cmeta_type_eq(cfield->type, &CINTEGER)) {
-            int val = json_integer_value(jItem);
-            cmeta_set(metaObj, cname, val);
-        } else if (cmeta_type_eq(cfield->type, &CDOUBLE)) {
-            double val = json_real_value(jItem);
-            cmeta_set(metaObj, cname, val);
-        } else if (cmeta_type_eq(cfield->type, &CSTRING)) {
+        } else if (cmeta_type_eq(ctype, &CBOOLEAN)) {
+            cmeta_set(metaObj, cname, (bool)json_boolean_value(jItem));
+        } else if (cmeta_type_eq(ctype, &CINTEGER)) {
+            cmeta_set(metaObj, cname, (int)json_integer_value(jItem));
+        } else if (cmeta_type_eq(ctype, &CDOUBLE)) {
+            cmeta_set(metaObj, cname, (double)json_real_value(jItem));
+        } else if (cmeta_type_eq(ctype, &CSTRING)) {
             if (cfield->isPointer) {
                 // @todo or fail or malloc&copy
                 continue;
             }
-            const char * val = (const char *)json_string_value(jItem);
-            cmeta_set(metaObj, jfield->fieldName, val);
+            cmeta_set(metaObj, jfield->fieldName, (const char *)json_string_value(jItem));
         }
     }
 }

@@ -108,6 +108,7 @@ int main(void) {
     cmeta_set(obj, "pointObjPtr", &point2);
     cmeta_setArrayItem(obj, "pointArr", 2, &((point_t){ 9999, -7777 }));
     cmeta_setArrayItem(obj, "pointArr", 4, &((point_t){ 1111, -7777 }));
+    cmeta_setArrayItem(obj, "pointArr", -1, &((point_t){ 5, 3 }));  // @todo index out of bounds
     sample_cmeta_print(obj);
 
     // XML
