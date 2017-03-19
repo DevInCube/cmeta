@@ -90,6 +90,7 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
         return;
     }
     const cmeta_struct_t * cmetatype = xmeta->metaType;
+    cmeta_object_t * metaObj = cmeta_cast_object(obj, cmetatype);
     for (int i = 0; i < xmeta->fieldsSize; i++) {
         const xmeta_field_t * xfield = xmeta->fields + i;
         const cmeta_field_t * cfield = cmeta_struct_getField(cmetatype, xfield->fieldName);
@@ -100,24 +101,26 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
         const char * xname = xfield->name;
         const char * cname = cfield->name;
         xmlNode * innerNode = _xml_getNodeByKey(xnode, xname);
-        cmeta_object_t * metaObj = cmeta_cast_object(obj, xmeta->metaType);
         if (cmeta_isObject(cfield)) {
             if (NULL == innerNode) {
-                // @todo
+                // @todo xml node is null
                 continue;
             }
             void * innerObj = cmeta_get(metaObj, cname, void *);
             _xmeta_deserialize(innerObj, xfield->type, innerNode);
-            continue;
         } else if (cmeta_isArray(cfield)) {
             if (NULL == innerNode) {
-                // @todo
+                // @todo xml node is null
                 continue;
             }
             size_t cArrSize = cmeta_getArraySize(metaObj, cname);
             int index = 0;
-            for (xmlNode * xI = innerNode->children; xI && (index < cArrSize); xI = xI->next) {
+            for (xmlNode * xI = innerNode->children; xI; xI = xI->next) {
                 if (xI->type == XML_ELEMENT_NODE) {
+                    if (index >= cArrSize) {
+                        // @todo overflow error here
+                        break;
+                    }
                     void * itemObj = cmeta_getArrayItem(metaObj, cname, index);
                     _xmeta_deserialize(itemObj, xfield->type, xI);
                     index++;
@@ -131,8 +134,7 @@ void _xmeta_deserialize(void * obj, const xmeta_struct_t * xmeta, xmlNode * xnod
             char * content = malloc(sizeof(char) * valueLength);
             strncpy(content, value, valueLength);
             if (cmeta_type_eq(cfield->type, &CBOOLEAN)) {
-                bool value = (strncmp(content, "true", 4) == 0) ? true : false;
-                cmeta_set(metaObj, cname, (bool)value);
+                cmeta_set(metaObj, cname, (bool)(strncmp(content, "true", 4) == 0));
             } else if (cmeta_type_eq(cfield->type, &CINTEGER)) {
                 cmeta_set(metaObj, cname, (int)atoi(content));
             } else if (cmeta_type_eq(cfield->type, &CDOUBLE)) {
