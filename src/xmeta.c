@@ -65,7 +65,7 @@ static void _xmeta_serialize(void * obj, const xmeta_struct_t * xmeta, xmlNode *
 }
 
 const char * xmeta_serialize(void * obj, const xmeta_struct_t * xmeta) {
-    return xmeta_serialize_root(obj, xmeta, "root");
+    return xmeta_serialize_root(obj, xmeta, xmeta->name);
 }
 
 const char * xmeta_serialize_root(void * obj, const xmeta_struct_t * xmeta, const char * rootName) {
