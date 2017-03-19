@@ -92,12 +92,6 @@ CMETA_TYPE(CSTRING, char[1]);
 #define CMETA(TYPE, FIELD) \
 	{ #FIELD, & TYPE_OF(TYPE, FIELD), offsetof(TYPE, FIELD), 0, 0 }
 
-// #define CMETA(TYPE, FIELD, CMETATYPE) \
-// 	{ #FIELD, & CMETATYPE, offsetof(TYPE, FIELD), 0, 0 }
-
-// #define CMETA_STR(TYPE, FIELD, LENGTH) \
-// 	{ #FIELD, & CSTRING, offsetof(TYPE, FIELD), 0, LENGTH }
-
 #define CMETA_STR(TYPE, FIELD) \
 	{ #FIELD, & CSTRING, offsetof(TYPE, FIELD), 0, __LEN(FIELD_EXPR(TYPE, FIELD)) }
 
