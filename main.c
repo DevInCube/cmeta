@@ -68,6 +68,7 @@ int main(void) {
         .integer = 667,
         ._double = 321.123,
         .stringBuf = "String buffer string",
+        .stringPtr = "String pointer",
         .pointObj = {8, 8},
         .pointObjPtr = &point,
         .pointArr = { point, point2, {0, 0}, {1, 1}, {2, 2}}
@@ -91,7 +92,7 @@ int main(void) {
     const char * xmlString = xmeta_serialize((void *)obj->ptr, &XSAMPLE_T);
     puts(xmlString);
 
-    sample_clear_fields((sample_t *)obj->ptr);
+    //sample_clear_fields((sample_t *)obj->ptr);
     xmeta_deserialize((void *)obj->ptr, &XSAMPLE_T, xmlString);
     sample_cmeta_print((sample_t *)obj->ptr);
 

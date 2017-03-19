@@ -161,6 +161,7 @@ void cmeta_setArrayItem(cmeta_object_t * self, const char * fieldName, int index
 	_Generic((VAL),								\
 		const char *: cmeta_setString, 			\
 			  char *: cmeta_setString, 			\
+			    bool: cmeta_setBoolean,			\
 				 int: cmeta_setInteger,			\
 			  double: cmeta_setDouble,			\
 			 default: cmeta_setObject			\

@@ -102,10 +102,12 @@ void cmeta_setString(cmeta_object_t * self, const char * fieldName, const char *
         const char ** str = (const char **)VALUE_POINTER(CMETA_OFFSET(obj, field->offset));
         //const char ** str = (const char **)(&(CMETA_OFFSET(obj, field->offset)));
         if (str == NULL) {
-            // @todo error here
-            return;
+            // @todo error 
+        } else {
+            // @todo this can lead to errors
+            // e.g. when char * points to readonly memory
+            // *str = value;
         }
-        *str = value;
     } else {
         char * str = (char *)CMETA_OFFSET(obj, field->offset);
         size_t maxSize = field->arrSize;
