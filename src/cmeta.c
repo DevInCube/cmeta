@@ -83,10 +83,10 @@ const char * cmeta_getString(cmeta_object_t * self, const char * fieldName) {
     if ((NULL == field) || !cmeta_type_eq(field->type, &CSTRING)) {
         return NULL;
     }
-    const char * offset = CMETA_OFFSET(obj, field->offset);
-    return field->isPointer
-        ? (const char *)VALUE_POINTER(offset)
-        : offset;
+    void * offset = CMETA_OFFSET(obj, field->offset);
+    return (const char *)(field->isPointer
+        ? VALUE_POINTER(offset)
+        : *(const char (*)[])offset);
 }
 
 void cmeta_setString(cmeta_object_t * self, const char * fieldName, const char * value) {
